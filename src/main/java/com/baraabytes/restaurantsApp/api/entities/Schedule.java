@@ -3,14 +3,16 @@ package com.baraabytes.restaurantsApp.api.entities;
 import com.baraabytes.restaurantsApp.api.types.WeekDayType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class Schedule {
+public class Schedule implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -24,12 +26,8 @@ public class Schedule {
     @Enumerated(EnumType.STRING)
     private WeekDayType day;
 
-    @CreationTimestamp
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private LocalDateTime updatedAt;
+    @ManyToOne
+    private Restaurant restaurant;
 
     public Schedule() { }
 
@@ -63,21 +61,5 @@ public class Schedule {
 
     public void setDay(WeekDayType day) {
         this.day = day;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
