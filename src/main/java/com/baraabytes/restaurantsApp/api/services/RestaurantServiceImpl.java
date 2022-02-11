@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,11 @@ public class RestaurantServiceImpl implements RestaurantService<Restaurant, Sche
     private RestaurantScheduleRepository scheduleRepository;
 
     public RestaurantServiceImpl() {
+    }
+
+    @Override
+    public List<Restaurant> allRestaurants() {
+        return restaurantRepository.findAll();
     }
 
     @Override
@@ -46,7 +52,7 @@ public class RestaurantServiceImpl implements RestaurantService<Restaurant, Sche
     }
 
     @Override
-    public List<Restaurant> findRestaurants(WeekDayType weekDay,LocalDateTime openTime, LocalDateTime closeTime) {
+    public List<Restaurant> findRestaurants(WeekDayType weekDay, LocalTime openTime, LocalTime closeTime) {
         List<Restaurant> restaurants = scheduleRepository.findAllByDayEqualsAndOpenTimeGreaterThanEqualAndCloseTimeLessThan(
                 weekDay,openTime,closeTime)
                 .stream().map(schedule -> schedule.getRestaurant()).collect(Collectors.toList());

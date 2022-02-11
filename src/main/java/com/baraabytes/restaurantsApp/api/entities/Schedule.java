@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -19,9 +20,9 @@ public class Schedule implements Serializable {
 
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private LocalDateTime openTime;
+    private LocalTime openTime;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private LocalDateTime closeTime;
+    private LocalTime closeTime;
 
     @Enumerated(EnumType.STRING)
     private WeekDayType day;
@@ -39,19 +40,19 @@ public class Schedule implements Serializable {
         this.id = id;
     }
 
-    public LocalDateTime getOpenTime() {
+    public LocalTime getOpenTime() {
         return openTime;
     }
 
-    public void setOpenTime(LocalDateTime openTime) {
+    public void setOpenTime(LocalTime openTime) {
         this.openTime = openTime;
     }
 
-    public LocalDateTime getCloseTime() {
+    public LocalTime getCloseTime() {
         return closeTime;
     }
 
-    public void setCloseTime(LocalDateTime closeTime) {
+    public void setCloseTime(LocalTime closeTime) {
         this.closeTime = closeTime;
     }
 
