@@ -12,11 +12,11 @@ public interface RestaurantService<R,E> {
     R findRestaurant(Long id);
     List<R> findRestaurants(String name);
     List<R> findRestaurants(WeekDayType weekDay);
-    List<R> findRestaurants(LocalDateTime openTime,LocalDateTime closeTime);
+    List<R> findRestaurants(WeekDayType weekDay,LocalDateTime openTime,LocalDateTime closeTime);
     void removeRestaurant(Long id);
 
 
-    E addTimeEntry(E Schedule);
+    E addTimeEntry(E schedule);
     void removeTimeEntry(Long id);
 
 }

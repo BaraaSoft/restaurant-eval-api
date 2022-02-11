@@ -62,4 +62,12 @@ public class Schedule implements Serializable {
     public void setDay(WeekDayType day) {
         this.day = day;
     }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 }
