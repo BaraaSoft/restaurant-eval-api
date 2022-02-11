@@ -39,8 +39,9 @@ public class RestaurantsController {
         return  ResponseEntity.ok(restaurant);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}",params = {"day","openAt","closeAt"})
     public ResponseEntity<List<Restaurant>> allRestaurantsAvaiableOn(
+            @PathVariable Long id,
             @RequestParam(value = "day") WeekDayType day,
             @RequestParam(value = "openAt") String openAtStr,
             @RequestParam(value = "closeAt") String closeAtStr)
@@ -52,7 +53,7 @@ public class RestaurantsController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Restaurant> addRestaurant(Restaurant restaurant){
+    public ResponseEntity<Restaurant> addRestaurant(@RequestBody Restaurant restaurant){
         Restaurant restr = restaurantService.addRestaurant(restaurant);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -63,7 +64,7 @@ public class RestaurantsController {
 
 
 
-    @GetMapping("/{id}/schedules}")
+    @GetMapping("/{id}/schedules")
     public ResponseEntity<List<Schedule>> getSchedule(@PathVariable Long id ){
         List<Schedule> timeEntry = restaurantService.findRestaurant(id).getSchedules();
 
@@ -71,7 +72,7 @@ public class RestaurantsController {
     }
 
     @PostMapping("/{id}/schedules")
-    public ResponseEntity<Schedule> addToSchedule(@PathVariable Long id,Schedule schedule){
+    public ResponseEntity<Schedule> addToSchedule(@PathVariable Long id,@RequestBody Schedule schedule){
         Schedule timeEntry = restaurantService.addTimeEntry(schedule);
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", id.toString());
