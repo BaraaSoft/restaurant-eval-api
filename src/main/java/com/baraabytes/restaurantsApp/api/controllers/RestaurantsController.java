@@ -14,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.net.URL;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,25 @@ public class RestaurantsController {
         return ResponseEntity.ok(restaurants);
     }
 
+    @GetMapping(value = "",params = {"day","from","to"})
+    public ResponseEntity<List<Restaurant>> allRestaurantsAvaiableOn(
+            @RequestParam(value = "day") WeekDayType day,
+            @RequestParam(value = "from") String fromStr,
+            @RequestParam(value = "to") String toStr)
+    {
+        LocalTime fromTime;
+        LocalTime toTime;
+        try {
+            fromTime = LocalTime.parse(fromStr);
+            toTime = LocalTime.parse(toStr);
+            List<Restaurant> restaurants = restaurantService
+                    .findRestaurants(day,fromTime,toTime);
+            return ResponseEntity.ok(restaurants);
+        }catch (DateTimeParseException e){
+            return  ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> getRestaurant(@PathVariable Long id){
         Restaurant restaurant = restaurantService.findRestaurant(id);
@@ -39,18 +59,7 @@ public class RestaurantsController {
         return  ResponseEntity.ok(restaurant);
     }
 
-    @GetMapping(value = "/{id}",params = {"day","openAt","closeAt"})
-    public ResponseEntity<List<Restaurant>> allRestaurantsAvaiableOn(
-            @PathVariable Long id,
-            @RequestParam(value = "day") WeekDayType day,
-            @RequestParam(value = "openAt") String openAtStr,
-            @RequestParam(value = "closeAt") String closeAtStr)
-    {
 
-        List<Restaurant> restaurants = restaurantService
-                .findRestaurants(day,LocalTime.parse(openAtStr),LocalTime.parse(closeAtStr));
-        return ResponseEntity.ok(restaurants);
-    }
 
     @PostMapping("")
     public ResponseEntity<Restaurant> addRestaurant(@RequestBody Restaurant restaurant){
@@ -73,7 +82,7 @@ public class RestaurantsController {
 
     @PostMapping("/{id}/schedules")
     public ResponseEntity<Schedule> addToSchedule(@PathVariable Long id,@RequestBody Schedule schedule){
-        Schedule timeEntry = restaurantService.addTimeEntry(schedule);
+        Schedule timeEntry = restaurantService.addTimeEntry(id,schedule);
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", id.toString());
         params.put("scheduleId",schedule.getId().toString());
@@ -82,6 +91,19 @@ public class RestaurantsController {
                 .buildAndExpand(params)
                 .toUri();
         return  ResponseEntity.created(uri).body(timeEntry);
+    }
+
+    @PostMapping(value ="/{id}/schedules",params = {"isList"})
+    public ResponseEntity<List<Schedule>> addToSchedules(@PathVariable Long id,
+                                                         @RequestParam(value ="isList") Boolean isList,
+                                                         @RequestBody List<Schedule> scheduleList){
+        if(isList == true){
+            List<Schedule> timeEntries = restaurantService.addTimeEntries(id,scheduleList);
+            return  ResponseEntity.ok(timeEntries);
+        }
+
+        return ResponseEntity.badRequest().build();
+
     }
 
     @GetMapping("/{id}/schedules/{scheduleId}")
