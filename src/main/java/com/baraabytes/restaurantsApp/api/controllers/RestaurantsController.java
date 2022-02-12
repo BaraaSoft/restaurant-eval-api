@@ -33,7 +33,7 @@ public class RestaurantsController {
     }
 
     @GetMapping(value = "",params = {"day","from","to"})
-    public ResponseEntity<List<Restaurant>> allRestaurantsAvaiableOn(
+    public ResponseEntity<List<Restaurant>> allRestaurantsAvailable(
             @RequestParam(value = "day") WeekDayType day,
             @RequestParam(value = "from") String fromStr,
             @RequestParam(value = "to") String toStr)
@@ -81,7 +81,7 @@ public class RestaurantsController {
     }
 
     @PostMapping("/{id}/schedules")
-    public ResponseEntity<Schedule> addToSchedule(@PathVariable Long id,@RequestBody Schedule schedule){
+    public ResponseEntity<Schedule> addSchedule(@PathVariable Long id,@RequestBody Schedule schedule){
         Schedule timeEntry = restaurantService.addTimeEntry(id,schedule);
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", id.toString());
@@ -94,7 +94,7 @@ public class RestaurantsController {
     }
 
     @PostMapping(value ="/{id}/schedules",params = {"isList"})
-    public ResponseEntity<List<Schedule>> addToSchedules(@PathVariable Long id,
+    public ResponseEntity<List<Schedule>> addSchedules(@PathVariable Long id,
                                                          @RequestParam(value ="isList") Boolean isList,
                                                          @RequestBody List<Schedule> scheduleList){
         if(isList == true){
