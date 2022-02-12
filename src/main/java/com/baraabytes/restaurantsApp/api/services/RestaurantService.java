@@ -1,6 +1,7 @@
 package com.baraabytes.restaurantsApp.api.services;
 
 import com.baraabytes.restaurantsApp.api.entities.Restaurant;
+import com.baraabytes.restaurantsApp.api.entities.Schedule;
 import com.baraabytes.restaurantsApp.api.repositories.RestaurantRepository;
 import com.baraabytes.restaurantsApp.api.types.WeekDayType;
 
@@ -20,6 +21,8 @@ public interface RestaurantService<R,E> {
 
 
     E addTimeEntry(E schedule);
+    E addTimeEntry(Long restaurantId,E schedule);
+    List<E> addTimeEntries(Long restaurantId, List<E> scheduleList);
     void removeTimeEntry(Long id);
 
 }

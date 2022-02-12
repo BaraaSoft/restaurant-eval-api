@@ -41,4 +41,8 @@ public class Restaurant implements Serializable {
     public void setSchedules(List<Schedule> schedules) {
         this.schedules = schedules;
     }
+
+    public void addSchedules(Schedule schedule){
+        this.schedules.add(schedule);
+    }
 }
