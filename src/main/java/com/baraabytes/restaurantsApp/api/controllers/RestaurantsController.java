@@ -4,6 +4,7 @@ import com.baraabytes.restaurantsApp.api.entities.Restaurant;
 import com.baraabytes.restaurantsApp.api.entities.Schedule;
 import com.baraabytes.restaurantsApp.api.services.RestaurantService;
 import com.baraabytes.restaurantsApp.api.types.WeekDayType;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
 import org.springframework.http.HttpHeaders;
