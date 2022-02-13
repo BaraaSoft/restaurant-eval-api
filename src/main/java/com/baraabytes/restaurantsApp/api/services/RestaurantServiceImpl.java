@@ -33,9 +33,9 @@ public class RestaurantServiceImpl implements RestaurantService<Restaurant, Sche
 
     @Override
     public Iterable<Restaurant> allRestaurants(Integer pageNum,Integer pageSize) {
-        Pageable page = PageRequest.of(pageNum,pageSize);
+        Pageable page = PageRequest.of(pageNum,pageSize,Sort.by("name").ascending());
 
-        return restaurantRepository.findAll(Sort.by("name").ascending());
+        return restaurantRepository.findAll(page);
     }
 
     @Override

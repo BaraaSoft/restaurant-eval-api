@@ -29,9 +29,10 @@ public class RestaurantsController {
 
     @GetMapping(value = "",params = {"page","size"})
     public ResponseEntity<Iterable<Restaurant>> allRestaurants(
-            @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "size", defaultValue = "10") Integer size
+            @RequestParam(value = "page", defaultValue = "1",required = false) Integer page,
+            @RequestParam(value = "size", defaultValue = "10",required = false) Integer size
     ){
+        if(page <= 0) return ResponseEntity.badRequest().build();
         Iterable<Restaurant> restaurants = restaurantService.allRestaurants(page-1,size);
         return ResponseEntity.ok(restaurants);
     }
@@ -39,9 +40,10 @@ public class RestaurantsController {
     @GetMapping(value = "", params = {"startWith","page","size"})
     public ResponseEntity<List<Restaurant>> allRestaurants(
             @RequestParam(value = "startWith") String startWith,
-            @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "size", defaultValue = "10") Integer size
+            @RequestParam(value = "page", defaultValue = "1",required = false) Integer page,
+            @RequestParam(value = "size", defaultValue = "10",required = false) Integer size
     ){
+        if(page <= 0) return ResponseEntity.badRequest().build();
         List<Restaurant> restaurants = restaurantService.findRestaurants(startWith,page-1,size);
         return ResponseEntity.ok(restaurants);
     }
