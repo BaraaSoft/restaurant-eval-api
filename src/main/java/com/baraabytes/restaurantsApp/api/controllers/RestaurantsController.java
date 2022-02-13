@@ -27,7 +27,7 @@ public class RestaurantsController {
     @Autowired
     RestaurantService<Restaurant, Schedule> restaurantService;
 
-    @GetMapping(value = "",params = {"page","size"})
+    @GetMapping(value = "")
     public ResponseEntity<Iterable<Restaurant>> allRestaurants(
             @RequestParam(value = "page", defaultValue = "1",required = false) Integer page,
             @RequestParam(value = "size", defaultValue = "10",required = false) Integer size
@@ -37,14 +37,14 @@ public class RestaurantsController {
         return ResponseEntity.ok(restaurants);
     }
 
-    @GetMapping(value = "", params = {"startWith","page","size"})
-    public ResponseEntity<List<Restaurant>> allRestaurants(
+    @GetMapping(value = "", params = {"startWith"})
+    public ResponseEntity<Iterable<Restaurant>> allRestaurants(
             @RequestParam(value = "startWith") String startWith,
             @RequestParam(value = "page", defaultValue = "1",required = false) Integer page,
             @RequestParam(value = "size", defaultValue = "10",required = false) Integer size
     ){
         if(page <= 0) return ResponseEntity.badRequest().build();
-        List<Restaurant> restaurants = restaurantService.findRestaurants(startWith,page-1,size);
+        Iterable<Restaurant> restaurants = restaurantService.findRestaurants(startWith,page-1,size);
         return ResponseEntity.ok(restaurants);
     }
 

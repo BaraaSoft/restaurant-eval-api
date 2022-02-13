@@ -49,8 +49,8 @@ public class RestaurantServiceImpl implements RestaurantService<Restaurant, Sche
     }
 
     @Override
-    public List<Restaurant> findRestaurants(String name,Integer pageNum,Integer pageSize) {
-        Pageable page = PageRequest.of(pageNum,pageSize);
+    public Iterable<Restaurant> findRestaurants(String name,Integer pageNum,Integer pageSize) {
+        Pageable page = PageRequest.of(pageNum,pageSize,Sort.by("name").ascending());
         return restaurantRepository.findAllByNameStartsWith(name,page);
     }
 

@@ -14,7 +14,7 @@ public interface RestaurantService<R,E> {
     R addRestaurant(R restaurant);
     R findRestaurant(Long id);
     Iterable<R> allRestaurants(Integer pageNum,Integer pageSize);
-    List<R> findRestaurants(String name,Integer pageNum,Integer pageSize);
+    Iterable<R> findRestaurants(String name,Integer pageNum,Integer pageSize);
     List<R> findRestaurants(WeekDayType weekDay);
     List<R> findRestaurants(WeekDayType weekDay, LocalTime openTime, LocalTime closeTime);
     void removeRestaurant(Long id);
