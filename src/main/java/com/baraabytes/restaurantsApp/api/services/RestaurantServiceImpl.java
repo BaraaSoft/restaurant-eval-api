@@ -6,6 +6,9 @@ import com.baraabytes.restaurantsApp.api.repositories.RestaurantRepository;
 import com.baraabytes.restaurantsApp.api.repositories.RestaurantScheduleRepository;
 import com.baraabytes.restaurantsApp.api.types.WeekDayType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +32,10 @@ public class RestaurantServiceImpl implements RestaurantService<Restaurant, Sche
 
 
     @Override
-    public List<Restaurant> allRestaurants() {
-        return restaurantRepository.findAll();
+    public Iterable<Restaurant> allRestaurants(Integer pageNum,Integer pageSize) {
+        Pageable page = PageRequest.of(pageNum,pageSize);
+
+        return restaurantRepository.findAll(Sort.by("name").ascending());
     }
 
     @Override
@@ -44,8 +49,9 @@ public class RestaurantServiceImpl implements RestaurantService<Restaurant, Sche
     }
 
     @Override
-    public List<Restaurant> findRestaurants(String name) {
-        return restaurantRepository.findAllByNameStartsWith(name);
+    public List<Restaurant> findRestaurants(String name,Integer pageNum,Integer pageSize) {
+        Pageable page = PageRequest.of(pageNum,pageSize);
+        return restaurantRepository.findAllByNameStartsWith(name,page);
     }
 
     @Override

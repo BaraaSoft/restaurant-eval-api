@@ -27,17 +27,22 @@ public class RestaurantsController {
     @Autowired
     RestaurantService<Restaurant, Schedule> restaurantService;
 
-    @GetMapping("")
-    public ResponseEntity<List<Restaurant>> allRestaurants(){
-        List<Restaurant> restaurants = restaurantService.allRestaurants();
+    @GetMapping(value = "",params = {"page","size"})
+    public ResponseEntity<Iterable<Restaurant>> allRestaurants(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size
+    ){
+        Iterable<Restaurant> restaurants = restaurantService.allRestaurants(page-1,size);
         return ResponseEntity.ok(restaurants);
     }
 
-    @GetMapping(value = "", params = {"startWith"})
+    @GetMapping(value = "", params = {"startWith","page","size"})
     public ResponseEntity<List<Restaurant>> allRestaurants(
-            @RequestParam(value = "startWith") String startWith
+            @RequestParam(value = "startWith") String startWith,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size
     ){
-        List<Restaurant> restaurants = restaurantService.findRestaurants(startWith);
+        List<Restaurant> restaurants = restaurantService.findRestaurants(startWith,page-1,size);
         return ResponseEntity.ok(restaurants);
     }
 
