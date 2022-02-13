@@ -1,6 +1,7 @@
 package com.baraabytes.restaurantsApp.api.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +10,8 @@ import java.util.List;
 @Entity
 public class Restaurant implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
+    @GenericGenerator(name = "native",strategy = "native")
     private Long id;
 
     private String name;

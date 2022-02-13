@@ -3,6 +3,7 @@ package com.baraabytes.restaurantsApp.api.entities;
 import com.baraabytes.restaurantsApp.api.types.WeekDayType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,8 +16,9 @@ import java.util.List;
 @Entity
 public class Schedule implements Serializable {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
+    @GenericGenerator(name = "native",strategy = "native")
+    private Long id ;
 
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
