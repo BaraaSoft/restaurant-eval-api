@@ -33,6 +33,14 @@ public class RestaurantsController {
         return ResponseEntity.ok(restaurants);
     }
 
+    @GetMapping(value = "", params = {"startWith"})
+    public ResponseEntity<List<Restaurant>> allRestaurants(
+            @RequestParam(value = "startWith") String startWith
+    ){
+        List<Restaurant> restaurants = restaurantService.findRestaurants(startWith);
+        return ResponseEntity.ok(restaurants);
+    }
+
     @GetMapping(value = "",params = {"day","from","to"})
     public ResponseEntity<List<Restaurant>> allRestaurantsAvailable(
             @RequestParam(value = "day") WeekDayType day,
