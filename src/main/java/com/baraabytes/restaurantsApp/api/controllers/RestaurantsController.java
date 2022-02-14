@@ -1,19 +1,17 @@
 package com.baraabytes.restaurantsApp.api.controllers;
 
+import com.baraabytes.restaurantsApp.api.utils.Util;
 import com.baraabytes.restaurantsApp.api.entities.Restaurant;
 import com.baraabytes.restaurantsApp.api.entities.Schedule;
 import com.baraabytes.restaurantsApp.api.services.RestaurantService;
 import com.baraabytes.restaurantsApp.api.types.WeekDayType;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Point;
-import org.springframework.http.HttpHeaders;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.net.URL;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
@@ -49,19 +47,23 @@ public class RestaurantsController {
     }
 
     @GetMapping(value = "",params = {"day","from","to"})
-    public ResponseEntity<List<Restaurant>> allRestaurantsAvailable(
+    public ResponseEntity<Iterable<Restaurant>> allRestaurantsAvailable(
             @RequestParam(value = "day") WeekDayType day,
             @RequestParam(value = "from") String fromStr,
-            @RequestParam(value = "to") String toStr)
-    {
+            @RequestParam(value = "to") String toStr,
+            @RequestParam(value = "page", defaultValue = "1",required = false) Integer page,
+            @RequestParam(value = "size", defaultValue = "10",required = false) Integer size
+    ){
         LocalTime fromTime;
         LocalTime toTime;
         try {
             fromTime = LocalTime.parse(fromStr);
             toTime = LocalTime.parse(toStr);
+
             List<Restaurant> restaurants = restaurantService
                     .findRestaurants(day,fromTime,toTime);
-            return ResponseEntity.ok(restaurants);
+           Page<Restaurant> pageList = Util.<Restaurant>paginate(restaurants,page,size);
+            return ResponseEntity.ok(pageList);
         }catch (DateTimeParseException e){
             return  ResponseEntity.badRequest().build();
         }

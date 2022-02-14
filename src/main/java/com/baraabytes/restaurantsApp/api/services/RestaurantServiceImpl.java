@@ -6,9 +6,7 @@ import com.baraabytes.restaurantsApp.api.repositories.RestaurantRepository;
 import com.baraabytes.restaurantsApp.api.repositories.RestaurantScheduleRepository;
 import com.baraabytes.restaurantsApp.api.types.WeekDayType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,7 +61,7 @@ public class RestaurantServiceImpl implements RestaurantService<Restaurant, Sche
 
     @Override
     public List<Restaurant> findRestaurants(WeekDayType weekDay, LocalTime openTime, LocalTime closeTime) {
-        List<Restaurant> restaurants = scheduleRepository.findAllByDayEqualsAndOpenTimeLessThanEqualAndCloseTimeGreaterThanEqual(
+        List<Restaurant> restaurants = scheduleRepository.findAllByDayEqualsAndOpenTimeLessThanEqualAndCloseTimeGreaterThanEqualOrderById(
                 weekDay,openTime,closeTime)
                 .stream().map(schedule -> schedule.getRestaurant()).collect(Collectors.toList());
         return restaurants;

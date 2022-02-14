@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface RestaurantScheduleRepository extends JpaRepository<Schedule,Long> {
     List<Schedule> findAllByDayEquals(WeekDayType weekDayType);
-    List<Schedule> findAllByDayEqualsAndOpenTimeLessThanEqualAndCloseTimeGreaterThanEqual(WeekDayType weekDayType, LocalTime openTime, LocalTime closeTime);
+    List<Schedule> findAllByDayEqualsAndOpenTimeLessThanEqualAndCloseTimeGreaterThanEqualOrderById(WeekDayType weekDayType, LocalTime openTime, LocalTime closeTime);
 }
