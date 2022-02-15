@@ -10,9 +10,9 @@ public final class Util {
 
     public static <E> Page<E> paginate(List<E> list,Integer pageNum,Integer pageSize){
         int skipCount = (pageNum - 1) * pageSize;
-        Pageable pageable = PageRequest.of(pageNum,pageSize, Sort.by("id").ascending());
         List<E> sublist =  list.stream().skip(skipCount).limit(pageSize).collect(Collectors.toList());
-        final Page<E> pageList = new PageImpl<E>(sublist,pageable,list.size());
+        Pageable pageable = PageRequest.of(pageNum-1,pageSize, Sort.by("id").ascending());
+        final Page<E> pageList = new PageImpl<E>(sublist,pageable,sublist.size());
         return  pageList;
     }
 
