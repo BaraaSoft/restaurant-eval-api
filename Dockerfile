@@ -1,6 +1,16 @@
+FROM openjdk:8-jdk-alpine as builder
+WORKDIR /app
+COPY . .
+RUN ./mvnw package && java -jar target/restaurantsAppApi-0.0.1-SNAPSHOT.jar
+
 FROM openjdk:8-jdk-alpine
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+WORKDIR /root/
+# Copy the binary from the builder stage and set it as the default command.
+COPY --from=builder /app/bin/hello /usr/local/bin/
+CMD ["hello"]
+#FROM openjdk:8-jdk-alpine
+#RUN addgroup -S spring && adduser -S spring -G spring
+#USER spring:spring
+#ARG JAR_FILE=target/*.jar
+#COPY ${JAR_FILE} app.jar
+#ENTRYPOINT ["java","-jar","/app.jar"]
