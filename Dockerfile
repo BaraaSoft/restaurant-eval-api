@@ -33,13 +33,17 @@ COPY . .
 
 # syntax=docker/dockerfile:experimental
 ########build stage########
+########build stage########
 FROM maven:3.5-jdk-8 as maven_build
 WORKDIR /app
 
 COPY pom.xml .
-COPY src ./src
+# To resolve dependencies in a safe way (no re-download when the source code changes)
+RUN mvn clean package -Dmaven.main.skip -Dmaven.test.skip && rm -r target
 
-RUN --mount=type=cache,target=/root/.m2 mvn clean package  -Dmaven.test.skip
+# To package the application
+COPY src ./src
+RUN mvn clean package -Dmaven.test.skip
 
 ########run stage########
 FROM java:8
