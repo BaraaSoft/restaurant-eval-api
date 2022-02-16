@@ -1,7 +1,8 @@
 FROM openjdk:8-jdk-alpine as builder
 WORKDIR /app
 COPY . .
-RUN ./mvnw package
+#RUN ./mvnw package
+RUN mvn clean install
 ARG JAR_FILE=target/restaurantsAppApi-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
 #&& java -jar target/restaurantsAppApi-0.0.1-SNAPSHOT.jar
