@@ -12,7 +12,7 @@ COPY pom.xml .
 RUN mvn install
 
 # To package the application
-COPY src ./src
+#COPY src ./src
 RUN mvn clean package -Dmaven.test.skip
 
 FROM openjdk:8-jdk-alpine
