@@ -48,7 +48,7 @@ RUN mvn -B install
 #----
 # Final stage
 #----
-FROM java:8
+FROM openjdk:8-jdk-alpine
 COPY --from=buildstage ./target/*.jar ./
 ENV JAVA_OPTS ""
 CMD [ "bash", "-c", "java ${JAVA_OPTS} -jar *.jar -v"]
