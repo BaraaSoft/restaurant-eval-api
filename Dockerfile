@@ -49,7 +49,7 @@ RUN mvn clean package -Dmaven.test.skip
 FROM java:8
 WORKDIR /app
 
-COPY --from=maven_build /app/target/*.jar
+COPY --from=maven_build /app/target/*.jar .
 
 #run the app
 ENV JAVA_OPTS ""
