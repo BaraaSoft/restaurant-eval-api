@@ -34,24 +34,21 @@ COPY . .
 # syntax=docker/dockerfile:experimental
 ########build stage########
 ########build stage########
-FROM maven:3.5-jdk-8 as maven_build
-WORKDIR /app
-
+#----
+# Build stage
+#----
+FROM maven:3.5-jdk-8 as buildstage
+# Copy only pom.xml of your projects and download dependencies
 COPY pom.xml .
-# To resolve dependencies in a safe way (no re-download when the source code changes)
-RUN mvn clean package -Dmaven.main.skip -Dmaven.test.skip && rm -r target
+RUN mvn -B -f pom.xml dependency:go-offline
+# Copy all other project files and build project
+COPY . .
+RUN mvn -B install
 
-# To package the application
-COPY src ./src
-RUN mvn clean package -Dmaven.test.skip
-
-########run stage########
+#----
+# Final stage
+#----
 FROM java:8
-WORKDIR /app
-
-COPY --from=maven_build /app/target/*.jar /app/target/*.jar
-
-#run the app
+COPY --from=buildstage ./target/*.jar ./
 ENV JAVA_OPTS ""
 CMD [ "bash", "-c", "java ${JAVA_OPTS} -jar *.jar -v"]
-#ENTRYPOINT ["java","-jar","/app.jar"]
