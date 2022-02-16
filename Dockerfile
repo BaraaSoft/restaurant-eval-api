@@ -14,6 +14,8 @@ RUN mvn install
 # To package the application
 #COPY src ./src
 RUN mvn clean package -Dmaven.test.skip
+ARG JAR_FILE=target/restaurantsAppApi-0.0.1-SNAPSHOT.jar
+COPY ${JAR_FILE} app.jar
 
 FROM openjdk:8-jdk-alpine
 WORKDIR /root/
