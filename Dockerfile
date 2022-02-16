@@ -1,4 +1,5 @@
-FROM openjdk:8-jdk-alpine as builder
+#FROM openjdk:8-jdk-alpine as builder
+FROM maven:3.8.4-openjdk-8 as builder
 WORKDIR /app
 COPY . .
 #RUN ./mvnw package
@@ -8,7 +9,7 @@ COPY . .
 
 COPY pom.xml .
 # To resolve dependencies in a safe way (no re-download when the source code changes)
-RUN mvn clean package -Dmaven.main.skip -Dmaven.test.skip && rm -r target
+RUN mvn install
 
 # To package the application
 COPY src ./src
