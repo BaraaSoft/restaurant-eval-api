@@ -1,5 +1,6 @@
 package com.baraabytes.restaurantsApp.api.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class Favourite {
     private Long id;
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     private User user;
 
