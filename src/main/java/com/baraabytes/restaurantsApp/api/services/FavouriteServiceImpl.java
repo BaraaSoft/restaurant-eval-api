@@ -23,7 +23,7 @@ public class FavouriteServiceImpl implements FavouriteService<Favourite, Favouri
 
     @Override
     public Favourite addFavoriteGroup(Favourite favourite, Long userId) {
-        User user = userRepository.getById(userId);
+        User user = userRepository.findById(userId).get();
         favourite.setUser(user);
         return favouriteRepository.save(favourite);
     }
@@ -35,7 +35,7 @@ public class FavouriteServiceImpl implements FavouriteService<Favourite, Favouri
 
     @Override
     public List<FavouriteItem> addFavoriteItems(List<FavouriteItem> items,Long favGrpId) {
-        Favourite favourite = favouriteRepository.getById(favGrpId);
+        Favourite favourite = favouriteRepository.findById(favGrpId).get();
         items.stream().forEach((favItem)-> favItem.setFavourite(favourite));
         return favouriteItemRepository.saveAll(items);
     }
