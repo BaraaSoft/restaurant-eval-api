@@ -9,6 +9,7 @@ import com.baraabytes.restaurantsApp.api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,10 +35,18 @@ public class FavouriteServiceImpl implements FavouriteService<Favourite, Favouri
     }
 
     @Override
-    public List<FavouriteItem> addFavoriteItems(List<FavouriteItem> items,Long favGrpId) {
+    public FavouriteItem addFavoriteItems(FavouriteItem favouriteItem,Long favGrpId) {
         Favourite favourite = favouriteRepository.findById(favGrpId).get();
-        items.stream().forEach((favItem)-> favItem.setFavourite(favourite));
-        return favouriteItemRepository.saveAll(items);
+        favouriteItem.setFavourite(favourite);
+
+        Boolean isExist = favouriteItemRepository.findAllByFavouriteId(favGrpId)
+                .stream()
+                .anyMatch(favouriteItem1 -> favouriteItem1.getRestaurant().getId().equals(favouriteItem.getRestaurant().getId()));
+        if(isExist){
+            return null;
+        }
+        return favouriteItemRepository
+                .save(favouriteItem);
     }
 
     @Override

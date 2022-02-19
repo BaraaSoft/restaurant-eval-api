@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,11 +47,13 @@ public class FavouriteController {
     }
 
     @PostMapping("/{grpId}/items")
-    public ResponseEntity<List<FavouriteItem>> addFavouriteItems(@PathVariable Long userId,
+    public ResponseEntity<FavouriteItem> addFavouriteItems(@PathVariable Long userId,
                                                                  @PathVariable Long grpId,
-                                                                 @RequestBody List<FavouriteItem> favouriteItemList
+                                                                 @RequestBody FavouriteItem favouriteItem
                                                                  ){
-        List<FavouriteItem> items =  favouriteService.addFavoriteItems(favouriteItemList,grpId);
+
+
+        FavouriteItem item =  favouriteService.addFavoriteItems(favouriteItem,grpId);
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", userId.toString());
         params.put("grpId",grpId.toString());
@@ -58,7 +61,7 @@ public class FavouriteController {
                 .path("/")
                 .buildAndExpand(params)
                 .toUri();
-        return  ResponseEntity.created(uri).body(items);
+        return  ResponseEntity.created(uri).body(item);
 
     }
 
